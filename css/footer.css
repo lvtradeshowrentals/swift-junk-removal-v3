@@ -1,0 +1,25 @@
+/* footer: quiet, tabular, with a monumental cropped wordmark */
+.foot { position: relative; background: var(--ink); overflow: hidden; padding-top: clamp(40px, 5vw, 80px); margin-top: -1px; }
+.ft-top { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(36px, 6vw, 110px); padding-bottom: clamp(48px, 6vw, 96px); }
+.ft-brand { display: grid; gap: 22px; align-content: start; }
+.ft-brand .brand { color: var(--bone); }
+.ft-brand p { color: var(--mute-d); max-width: 34ch; }
+.ft-phone { font: 800 clamp(26px, 3vw, 44px)/1 var(--f-display); font-stretch: 80%; letter-spacing: -.01em; text-transform: uppercase; }
+.ft-phone:hover { color: var(--copper); }
+.ft-mail { justify-self: start; text-transform: none; letter-spacing: .02em; font-size: 14px; }
+.ft-cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
+.ft-cols h4 { color: var(--mute-d); margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--line-d); }
+.ft-cols li + li { margin-top: 12px; }
+.ft-cols a { position: relative; display: inline-block; font-size: 15px; transition: color .3s, transform .5s var(--ease); }
+.ft-cols a:hover { color: var(--copper); transform: translateX(6px); }
+.ft-bot { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; padding: 22px 0; border-top: 1px solid var(--line-d); color: var(--mute-d); }
+.ft-bot p { margin: 0; }
+.to-top { display: inline-flex; align-items: center; gap: 10px; color: var(--bone); }
+.to-top:hover { color: var(--copper); }
+.ft-word { font: 900 22vw/.8 var(--f-display); font-stretch: 112%; letter-spacing: -.04em; text-align: center; color: transparent; background: linear-gradient(180deg, rgba(236,235,228,.2), rgba(236,235,228,.04) 85%); -webkit-background-clip: text; background-clip: text; margin: 1vw 0 -1.5vw; padding: 0 var(--gut); user-select: none; white-space: nowrap; }
+@media (max-width: 860px) {
+  .ft-top { grid-template-columns: 1fr; }
+  .ft-cols { grid-template-columns: 1fr 1fr; }
+  .ft-cols > div:first-child { grid-column: 1 / -1; }
+  .ft-geo { display: none; }
+}

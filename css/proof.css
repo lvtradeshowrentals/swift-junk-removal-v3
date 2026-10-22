@@ -1,0 +1,91 @@
+/* =========================================================================
+   PROOF — before/after compare. The two .ba-layer elements hold an inline SVG
+   line drawing (an illustration, honestly labelled). The divider is a 30deg chevron.
+   ========================================================================= */
+#proof {
+  position: relative; background: var(--ink); color: var(--bone);
+  padding: clamp(64px, 8vw, 140px) 0 calc(var(--joint) + clamp(40px, 6vw, 100px));
+}
+#proof .pf-head { display: grid; grid-template-columns: repeat(12, 1fr); column-gap: clamp(12px, 1.6vw, 28px); row-gap: 26px; align-items: end; }
+#proof .pf-head .eyebrow, #proof .pf-head .h2, #proof .pf-head .lede { grid-column: 1 / -1; }
+#proof .pf-head .h2 { margin-left: -.03em; }
+@media (min-width: 861px) { #proof .pf-head .lede { grid-column: 8 / 13; max-width: 38ch; margin-top: 6px; } }
+
+#proof .pf-fig { margin: clamp(34px, 4vw, 64px) 0 0; }
+
+/* the compare stage */
+#proof .pf-ba { --x: 60%; --k: 12%; position: relative; aspect-ratio: 1700 / 920; overflow: hidden; background: var(--ink);
+  border: 1px solid var(--line-d); touch-action: pan-y; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
+#proof .pf-layer { position: absolute; inset: 0; }
+#proof .pf-before { clip-path: polygon(0 0, calc(var(--x) - var(--k)) 0, var(--x) 50%, calc(var(--x) - var(--k)) 100%, 0 100%); }
+#proof .pf-svg { display: block; width: 100%; height: 100%; --sw: 1.2; --fs: 13; }
+#proof .pf-photo { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+/* chevron divider: one bright line + two echoes (the brand's >>> motif) */
+#proof .pf-edge { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+#proof .pf-edge polyline { fill: none; stroke-linejoin: miter; }
+#proof .pf-edge .e1 { stroke: var(--bone); stroke-width: 1.6; }
+#proof .pf-edge .e2 { stroke: var(--bone); stroke-width: 1; opacity: .34; }
+#proof .pf-edge .e3 { stroke: var(--bone); stroke-width: 1; opacity: .14; }
+
+#proof .pf-grip { position: absolute; z-index: 2; left: var(--x); top: 50%; width: 88px; height: 50px; transform: translate(-50%, -50%); display: grid; place-items: center; cursor: ew-resize;
+  background: var(--copper); color: var(--ink); transition: background .4s var(--ease);
+  clip-path: polygon(17px 0, calc(100% - 17px) 0, 100% 50%, calc(100% - 17px) 100%, 17px 100%, 0 50%); }
+#proof .pf-grip svg { width: 26px; height: 26px; transition: transform .5s var(--ease); }
+#proof .pf-grip:hover, #proof .pf-ba.is-drag .pf-grip { background: var(--bone); }
+#proof .pf-grip:focus-visible { outline: none; background: var(--bone); }
+#proof .pf-grip:focus-visible svg { transform: scaleX(1.18); }
+#proof .pf-ba:has(.pf-grip:focus-visible) .pf-edge .e1 { stroke: var(--copper); stroke-width: 3; }
+
+#proof .pf-tag { position: absolute; z-index: 1; top: 18px; padding: 9px 13px 8px; background: var(--ink); border: 1px solid var(--line-d); color: var(--bone); font-size: 11px; letter-spacing: .16em; pointer-events: none; }
+#proof .pf-tag--b { left: 18px; }
+#proof .pf-tag--a { right: 18px; }
+#proof .pf-ph { position: absolute; z-index: 1; left: 18px; bottom: 18px; color: var(--mute-d); font-size: 10.5px; letter-spacing: .16em; display: flex; align-items: center; gap: 10px; pointer-events: none; }
+#proof .pf-ph::before { content: ""; width: 22px; height: 1px; background: currentColor; opacity: .7; }
+#proof .pf-hint { position: absolute; z-index: 1; left: 50%; top: 18px; transform: translateX(-50%); color: var(--bone); font-size: 10.5px; letter-spacing: .16em; white-space: nowrap; padding: 8px 12px 7px; background: rgba(6,7,8,.86); border: 1px solid var(--line-d); transition: opacity .6s var(--ease); pointer-events: none; }
+#proof .pf-ba.used .pf-hint { opacity: 0; }
+
+/* footer: derived item readout + caption */
+#proof .pf-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px 44px; margin-top: 22px; }
+#proof .pf-count { display: flex; align-items: center; gap: 16px; margin: 0; color: var(--mute-d); font-size: 11px; letter-spacing: .14em; }
+#proof .pf-ticks { display: flex; align-items: flex-end; gap: 5px; height: 16px; }
+#proof .pf-ticks i { display: block; width: 3px; height: 16px; background: var(--bone); transform: skewX(-30deg); transform-origin: bottom; transition: opacity .35s var(--ease), transform .35s var(--ease); }
+#proof .pf-ticks i.off { opacity: .2; transform: skewX(-30deg) scaleY(.38); }
+#proof .pf-count-n { color: var(--bone); min-width: 8ch; }
+#proof .pf-count-n b { color: var(--copper); font-weight: 500; }
+#proof .pf-cap { font: 500 clamp(17px, 1.5vw, 23px)/1.3 var(--f-body); color: var(--bone); letter-spacing: -.005em; margin: 0; }
+
+/* ----- drawing styles (classes are prefixed g- so they cannot leak) ----- */
+#proof .g-ln, #proof .g-fa, #proof .g-ft, #proof .g-fs, #proof .g-hl, #proof .g-grid, #proof .g-grid2, #proof .g-room, #proof .g-door, #proof .g-frame, #proof .g-hole, #proof .g-cu, #proof .g-cu2 { stroke-width: var(--sw); stroke-linejoin: round; stroke-linecap: round; }
+#proof .g-ln { fill: none; stroke: #ecebe4; stroke-opacity: .92; }
+#proof .g-fa { fill: #0b0d10; stroke: #ecebe4; stroke-opacity: .88; }
+#proof .g-ft { fill: #12161c; stroke: #ecebe4; stroke-opacity: .88; }
+#proof .g-fs { fill: #080a0d; stroke: #ecebe4; stroke-opacity: .88; }
+#proof .g-hole { fill: #030405; stroke: #ecebe4; stroke-opacity: .7; }
+#proof .g-hl { fill: none; stroke: #ecebe4; stroke-opacity: .34; }
+#proof .g-grid { fill: none; stroke: #ecebe4; stroke-opacity: .2; }
+#proof .g-grid2 { fill: none; stroke: #ecebe4; stroke-opacity: .1; }
+#proof .g-room { fill: #07090b; stroke: #ecebe4; stroke-opacity: .55; }
+#proof .g-door { fill: #0a0d10; stroke: #ecebe4; stroke-opacity: .6; }
+#proof .g-frame { fill: none; stroke: #ecebe4; stroke-opacity: .8; stroke-width: calc(var(--sw) * 1.8); }
+#proof .g-cu { fill: none; stroke: #e8803f; }
+#proof .g-cu2 { fill: none; stroke: #e8803f; stroke-opacity: .5; }
+#proof .g-dot { fill: #e8803f; }
+#proof .g-lbbg { fill: #060708; }
+#proof .g-lb { font: 500 calc(var(--fs) * 1px) "Geist Mono", ui-monospace, Consolas, monospace; letter-spacing: .08em; }
+#proof .g-cu-t { fill: #e8803f; }
+/* junk lines retract ("erase") as the divider approaches; --e is set per item from JS (0 = drawn, 1 = gone) */
+#proof .junk > * { stroke-dasharray: 1 2; stroke-dashoffset: var(--e, 0); fill-opacity: calc(1 - var(--e, 0) * 1.5); }
+
+@media (max-width: 700px) {
+  #proof .pf-ba { aspect-ratio: 1.18; }
+  #proof .pf-grip { width: 76px; height: 46px; }
+  #proof .pf-tag { top: 12px; padding: 7px 10px 6px; font-size: 10px; }
+  #proof .pf-tag--b { left: 12px; } #proof .pf-tag--a { right: 12px; }
+  #proof .pf-ph { left: 12px; bottom: 12px; }
+  #proof .pf-hint { display: none; }
+  #proof .pf-count-l { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #proof .pf-grip, #proof .pf-grip svg, #proof .pf-ticks i, #proof .pf-hint { transition: none; }
+}

@@ -1,0 +1,4 @@
+_dev/shots/
+_dev/how/shots/
+node_modules/
+*.log

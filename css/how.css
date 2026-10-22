@@ -1,0 +1,137 @@
+/* =========================================================================
+   HOW IT WORKS — a pinned, scroll-scrubbed three-step instrument.
+   Default = stacked panels (mobile / touch / reduced motion). JS adds
+   .is-pin on desktop: tall track + sticky stage, scroll drives everything.
+   ========================================================================= */
+#how { --sw: 1.5px; --rw: clamp(104px, 10vw, 150px); --cw: clamp(290px, 27vw, 420px); --gp: clamp(26px, 2.8vw, 48px);
+  padding-top: calc(var(--joint) + clamp(44px, 6vw, 96px)); padding-bottom: calc(var(--joint) + clamp(40px, 6vw, 100px)); }
+
+/* ---------- header ---------- */
+#how .how-head { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 28px 48px; margin-bottom: clamp(40px, 5vw, 84px); }
+#how .how-hl { display: grid; gap: clamp(18px, 2vw, 30px); }
+#how .how-head .lede { max-width: 26ch; padding-bottom: .6em; }
+
+/* ---------- stacked default ---------- */
+#how .how-steps { display: grid; }
+#how .how-rail { display: none; }
+#how .how-step { position: relative; display: grid; gap: 22px 0; padding: 34px 0 52px; border-top: 1px solid var(--line-l); }
+#how .how-step::before { content: ""; position: absolute; left: 0; top: -1px; width: 100%; height: 1px; background: var(--copper); transform: scaleX(0); transform-origin: left; transition: transform 1.5s var(--ease); }
+#how .how-step.seen::before { transform: scaleX(1); }
+#how .how-n { font: 900 clamp(120px, 38vw, 210px)/.74 var(--f-display); font-stretch: 62%; letter-spacing: -.04em; margin-left: -.03em; padding-top: .06em; }
+#how .how-copy { display: grid; justify-items: start; align-content: start; }
+#how .how-tag { color: var(--mute-l); margin-bottom: 14px; }
+#how .how-copy h3 { font: 900 clamp(34px, 9.4vw, 60px)/.92 var(--f-display); font-stretch: 74%; letter-spacing: -.02em; text-transform: uppercase; max-width: 12ch; }
+#how .how-copy p:not(.how-tag) { margin: 16px 0 26px; max-width: 36ch; color: rgba(6,7,8,.72); font-size: clamp(15.5px, 1.2vw, 18px); line-height: 1.55; }
+#how .how-link { color: var(--ink); min-height: 44px; }
+#how .how-cta { min-height: 44px; }
+
+/* the panel: an ink instrument screen with chamfered corners */
+#how .how-art { position: relative; margin: 0; width: 100%; aspect-ratio: var(--ar, 1);
+  background: none; color: var(--bone); overflow: hidden;
+  clip-path: polygon(0 0, calc(100% - 30px) 0, 100% 30px, 100% 100%, 30px 100%, 0 calc(100% - 30px)); }
+#how .how-art[data-fig="1"] { --ar: .66; }
+#how .how-art[data-fig="2"] { --ar: .72; }
+#how .how-art[data-fig="3"] { --ar: 1.7; }
+#how .how-in { position: absolute; inset: 0; background-color: var(--ink);
+  background-image: radial-gradient(rgba(236,235,228,.13) 1px, transparent 1.3px); background-size: 26px 26px; background-position: 13px 13px; }
+#how .hw-svg { position: absolute; left: 0; right: 0; top: 36px; bottom: 36px; width: 100%; height: calc(100% - 72px); overflow: hidden; }
+#how .how-edge { position: absolute; left: 0; top: 0; width: 1px; height: 160%; background: var(--copper); opacity: 0; transform-origin: 0 0; pointer-events: none; }
+
+/* HUD */
+#how .how-hud span { position: absolute; color: var(--mute-d); font-size: 10.5px; }
+#how .hud-a { left: 22px; top: 16px; color: var(--copper); }
+#how .hud-b { right: 40px; top: 16px; }
+#how .hud-bar { left: 22px; bottom: 21px; width: min(40%, 220px); height: 1px; background: var(--line-d); }
+#how .hud-bar i { position: absolute; left: 0; top: -1px; height: 3px; width: 100%; background: var(--copper); transform-origin: left; transform: scaleX(var(--u, 0)); }
+#how .hud-c { right: 40px; bottom: 16px; }
+#how .hud-c em { font-style: normal; color: var(--copper); }
+#how .hc { position: absolute; width: 12px; height: 12px; border: 0 solid rgba(236,235,228,.4); }
+#how .hc.a { left: 10px; top: 10px; border-width: 1px 0 0 1px; }
+#how .hc.d { right: 10px; bottom: 10px; border-width: 0 1px 1px 0; }
+#how .hc.b, #how .hc.c { display: none; }
+
+/* ---------- vignette drawing language ---------- */
+#how .hw-svg .l, #how .hw-svg .d { fill: none; stroke: var(--bone); stroke-width: var(--sw); stroke-linecap: square; stroke-linejoin: miter; stroke-miterlimit: 10; }
+#how .hw-svg .o { stroke-opacity: .46; }
+#how .hw-svg .cu { stroke: var(--copper); }
+#how .hw-svg .f { fill: var(--ink); }
+#how .hw-svg .sk { stroke-opacity: .24; }
+#how .hw-svg .sk2 { fill: none; stroke: var(--bone); stroke-width: var(--sw); stroke-opacity: .16; stroke-dasharray: 2 7; }
+#how .hw-svg .tx { fill: var(--bone); }
+#how .hw-svg .t { fill: var(--bone); font-family: var(--f-body); }
+#how .hw-svg .t.mono { font: 500 13px var(--f-mono); letter-spacing: .14em; text-transform: uppercase; }
+#how .hw-svg .t.body { font: 400 15px var(--f-body); }
+#how .hw-svg .t.mute { fill-opacity: .6; }
+#how .hw-svg .t.cu-t { fill: var(--copper); }
+#how .hw-svg .t.ink-t { fill: var(--ink); }
+#how #hw-v2 .t.body { font-size: 19px; }
+#how #hw-v2 .t.k-b1t, #how #hw-v2 .t.k-b2t { font-size: 17px; }
+#how #hw-v2 .t.mono { font-size: 14px; }
+#how #hw-v2 .t.btn-t { font-size: 15px; font-weight: 600; letter-spacing: .1em; }
+#how #hw-v2 .t.disp { font: 900 62px var(--f-display); font-stretch: 62%; letter-spacing: -.02em; word-spacing: .14em; text-transform: uppercase; }
+/* static (final) state: camera is done, the thread is showing */
+#how .hw-cam { opacity: 0; }
+#how .k-flash, #how .k-tap, #how .k-done, #how .k-t1 { opacity: 0; }
+
+/* ---------- tablet flat: copy | art side by side ---------- */
+@media (min-width: 700px) {
+  #how .how-step { grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr); column-gap: clamp(32px, 6vw, 72px); align-items: center; }
+  #how .how-n { grid-column: 1; grid-row: 1; align-self: end; }
+  #how .how-copy { grid-column: 1; grid-row: 2; align-self: start; }
+  #how .how-art { grid-column: 2; grid-row: 1 / span 2; }
+  #how .how-step:nth-child(even) .how-n, #how .how-step:nth-child(even) .how-copy { grid-column: 2; }
+  #how .how-step:nth-child(even) .how-art { grid-column: 1; }
+}
+@media (max-width: 699px) {
+  #how .how-head { grid-template-columns: 1fr; }
+  #how .how-head .lede { padding-bottom: 0; }
+  #how .how-step { padding: 30px 0 46px; }
+  #how .hud-b { display: none; }
+}
+
+/* ---------- PINNED (desktop) ---------- */
+#how.is-pin .how-track { height: 450svh; }
+#how.is-pin .how-pin { position: sticky; top: 0; height: 100svh; overflow: hidden; }
+#how.is-pin .how-stage { height: 100%; display: grid; grid-template-columns: var(--rw) 1fr; column-gap: var(--gp); padding-top: clamp(84px, 11svh, 104px); padding-bottom: clamp(24px, 4.5svh, 44px); }
+#how.is-pin .how-steps { position: relative; display: block; grid-column: 2; min-height: 0; container-type: size; }
+#how.is-pin .how-step { position: absolute; inset: 0; display: block; padding: 0; border: 0; }
+#how.is-pin .how-step::before { display: none; }
+#how.is-pin .how-n { display: none; }
+#how.is-pin .how-copy { position: absolute; left: 0; width: var(--cw); top: 50%; translate: 0 -50%; opacity: var(--co, 0); transform: translate3d(0, var(--cy, 0px), 0); will-change: opacity, transform; pointer-events: none; }
+#how.is-pin .how-step[data-i="0"] { --i: 0; } #how.is-pin .how-step[data-i="1"] { --i: 1; } #how.is-pin .how-step[data-i="2"] { --i: 2; }
+#how.is-pin .how-copy::before { content: ""; position: absolute; right: 100%; top: 50%; width: var(--gp); height: 1px; background: var(--copper); transform-origin: right; transform: scaleX(var(--co, 0)); }
+#how.is-pin .how-step[data-i="0"] .how-copy::before, #how.is-pin .how-step[data-i="2"] .how-copy::before { width: calc(var(--gp) / 2); }
+#how .how-trace { display: none; }
+#how.is-pin .how-trace { display: block; position: absolute; left: calc(var(--gp) * -1); width: calc(var(--gp) / 2); border: 0 solid var(--copper); opacity: var(--co, 0); pointer-events: none; }
+#how.is-pin .how-step[data-i="0"] .how-trace { top: calc(100% / 6); height: calc(100% / 3); border-width: 1px 1px 0 0; clip-path: inset(0 0 calc(100% - var(--co, 0) * 100%) 0); }
+#how.is-pin .how-step[data-i="1"] .how-trace { display: none; }
+#how.is-pin .how-step[data-i="2"] .how-trace { top: 50%; height: calc(100% / 3); border-width: 0 1px 1px 0; clip-path: inset(calc(100% - var(--co, 0) * 100%) 0 0 0); }
+#how.is-pin .how-copy h3 { font-size: clamp(36px, min(3.5vw, 6.4svh), 64px); max-width: 12ch; }
+#how.is-pin .how-copy p:not(.how-tag) { margin: clamp(12px, 2svh, 20px) 0 clamp(18px, 3.4svh, 30px); }
+#how.is-pin .how-art { position: absolute; top: 0; bottom: 0; right: 0; left: calc(var(--cw) + var(--gp)); width: auto; aspect-ratio: auto; max-height: 780px; margin: auto 0; height: 100%; height: min(100%, calc((100cqw - var(--cw) - var(--gp)) * 1.04)); }
+#how.is-pin .hw-svg { top: 44px; bottom: 44px; height: calc(100% - 88px); }
+#how.is-pin .how-edge { opacity: var(--eo, 0); }
+
+#how.is-pin .how-rail { display: grid; grid-template-rows: repeat(3, 1fr); position: relative; grid-column: 1; min-height: 0; }
+#how.is-pin .how-spine { position: absolute; right: 0; top: calc(100% / 6); bottom: calc(100% / 6); width: 1px; background: var(--line-l); }
+#how.is-pin .how-spine::before { content: ""; position: absolute; right: 1px; top: 0; bottom: 0; width: 7px; background: repeating-linear-gradient(to bottom, var(--line-l) 0 1px, transparent 1px 14px); }
+#how.is-pin .how-spine b { position: absolute; left: -1px; top: 0; bottom: 0; width: 3px; background: var(--copper); transform-origin: top; transform: scaleY(var(--p, 0)); }
+#how.is-pin .how-rn { position: relative; display: flex; align-items: center; padding-right: 22px; font: 900 min(27svh, 14vw)/.78 var(--f-display); font-stretch: 62%; letter-spacing: -.04em; color: var(--ink); }
+#how.is-pin .how-rn > span { display: block; margin-left: -.03em; padding-top: .05em; opacity: var(--o, .09); }
+#how.is-pin .how-node { position: absolute; right: -6px; top: 50%; width: 13px; height: 20px; translate: 0 -50%; background: var(--ink); opacity: .16; clip-path: polygon(0 0, 55% 0, 100% 50%, 55% 100%, 0 100%, 45% 50%); }
+#how.is-pin .how-rn.on .how-node { background: var(--copper); opacity: 1; }
+#how.is-pin .how-rn.past .how-node { opacity: .7; }
+
+/* ---------- short laptop screens ---------- */
+@media (max-height: 760px) and (min-width: 981px) {
+  #how.is-pin .how-copy h3 { font-size: clamp(32px, min(3.2vw, 6.2svh), 52px); }
+  #how.is-pin .how-tag { margin-bottom: 8px; }
+  #how.is-pin .how-copy p:not(.how-tag) { font-size: 15px; }
+}
+@media (prefers-reduced-motion: reduce) { #how .how-step::before { transition: none; transform: scaleX(1); } }
+#how:not(.is-pin) .hw-callouts { display: none; }
+@media (min-width: 700px) {
+  #how:not(.is-pin) .how-art[data-fig="1"], #how:not(.is-pin) .how-art[data-fig="2"] { max-width: 480px; justify-self: end; }
+  #how:not(.is-pin) .how-art[data-fig="3"] { max-width: 760px; justify-self: end; }
+  #how:not(.is-pin) .how-step:nth-child(even) .how-art { justify-self: start; }
+}

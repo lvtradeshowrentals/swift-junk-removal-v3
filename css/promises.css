@@ -1,0 +1,49 @@
+/* =========================================================================
+   PROMISES: calm bone section. Four oversized typographic rows; each icon
+   draws itself as the row arrives, and a copper chevron slides across on hover.
+   ========================================================================= */
+#promise { padding: clamp(96px, 11vw, 190px) 0 calc(var(--joint) + clamp(48px, 7vw, 120px)); }
+.pr-head { margin-bottom: clamp(56px, 7vw, 120px); }
+.pr-head .eyebrow { margin-bottom: clamp(22px, 2.4vw, 34px); }
+.pr-head .h2 { margin-left: -.03em; max-width: 9em; }
+
+.pr-list { border-top: 1px solid var(--line-l); }
+.pr { position: relative; isolation: isolate; display: grid; align-items: center;
+  grid-template-columns: clamp(40px, 5vw, 84px) clamp(76px, 9vw, 150px) minmax(0, 1fr) minmax(0, 30ch);
+  column-gap: clamp(18px, 3vw, 56px);
+  padding: clamp(30px, 4.2vw, 68px) 0;
+  background: linear-gradient(var(--line-l), var(--line-l)) calc(var(--gut) * .5) 100% / calc(100% - var(--gut)) 1px no-repeat;
+  margin: 0 calc(var(--gut) * -.5); padding-left: calc(var(--gut) * .5); padding-right: calc(var(--gut) * .5);
+  overflow: clip; }
+.pr::before { content: ""; position: absolute; z-index: -1; inset: -1px 0 0 0; background: var(--copper);
+  clip-path: polygon(0 0, calc(100% - clamp(24px, 3vw, 54px)) 0, 100% 50%, calc(100% - clamp(24px, 3vw, 54px)) 100%, 0 100%);
+  transform: translate3d(-101%, 0, 0); transition: transform .95s var(--ease-io); }
+.pr-n { font-size: 13px; color: var(--mute-l); transition: color .5s var(--ease), transform .8s var(--ease); }
+.pr-ico { width: 100%; height: auto; max-width: 150px; color: var(--ink); overflow: visible; transition: transform .8s var(--ease); }
+.pr-ico * { fill: none; stroke: currentColor; stroke-width: .95; stroke-linecap: square; stroke-linejoin: miter; stroke-dasharray: 1; stroke-dashoffset: 1; }
+.pr-ico .cu { stroke: var(--copper-deep); stroke-width: 1.5; transition-property: stroke; }
+.pr.in .pr-ico * { stroke-dashoffset: 0; transition: stroke-dashoffset 1.7s var(--ease-io) calc(var(--k, 0) * .22s + .25s), stroke .5s var(--ease); }
+.pr-t { word-spacing: .14em; font: 900 clamp(38px, 5.6vw, 102px)/.88 var(--f-display); font-stretch: 68%; letter-spacing: -.035em; text-transform: uppercase; transition: transform .9s var(--ease); }
+.pr-p { font-size: clamp(15px, 1.15vw, 18px); line-height: 1.5; color: var(--mute-l); max-width: 30ch; justify-self: end; transition: color .5s var(--ease), transform .9s var(--ease); }
+
+@media (hover: hover) and (min-width: 861px) {
+  .pr:hover::before { transform: none; }
+  .pr:hover .pr-n { transform: translateX(clamp(8px, 1.2vw, 20px)); color: var(--ink); }
+  .pr:hover .pr-ico { transform: translateX(clamp(8px, 1.2vw, 20px)); }
+  .pr:hover .pr-ico .cu { stroke: var(--ink); }
+  .pr:hover .pr-t { transform: translateX(clamp(8px, 1.2vw, 20px)); }
+  .pr:hover .pr-p { color: var(--ink); transform: translateX(calc(clamp(8px, 1.2vw, 20px) * -1)); }
+}
+
+@media (max-width: 860px) {
+  .pr { grid-template-columns: 56px minmax(0, 1fr); grid-template-areas: "n ico" "t t" "p p"; row-gap: 18px; align-items: start; }
+  .pr-n { grid-area: n; align-self: center; }
+  .pr-ico { grid-area: ico; width: 84px; justify-self: end; }
+  .pr-t { grid-area: t; font-size: clamp(42px, 13.4vw, 84px); }
+  .pr-p { grid-area: p; justify-self: start; max-width: 36ch; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pr-ico * { stroke-dashoffset: 0 !important; transition: none !important; }
+  .pr::before, .pr-n, .pr-ico, .pr-t, .pr-p { transition: none !important; }
+}
+.pr.hot .pr-n { color: var(--copper-deep); }

@@ -1,0 +1,152 @@
+/* =========================================================================
+   SERVICES — "the index". Default = a clean stacked list of five cards.
+   JS adds .sx--pin on wide, fine-pointer, motion-ok screens: a tall track with a
+   pinned 100svh stage (huge numbered index left, photo window right).
+   ========================================================================= */
+@property --w { syntax: '<number>'; inherits: false; initial-value: 0; }
+
+#services {
+  --nc: clamp(46px, 4.6vw, 84px);
+  position: relative; background: var(--ink); color: var(--bone);
+  padding: clamp(64px, 8vw, 140px) 0 calc(var(--joint) + clamp(40px, 6vw, 100px));
+}
+
+/* ---------- head ---------- */
+#services .sx-head { display: grid; grid-template-columns: repeat(12, 1fr); column-gap: clamp(12px, 1.6vw, 28px); row-gap: 26px; align-items: end; }
+#services .sx-head .eyebrow { grid-column: 1 / -1; }
+#services .sx-head .h2 { grid-column: 1 / -1; margin-left: -.03em; }
+#services .sx-head .lede { grid-column: 1 / -1; }
+@media (min-width: 861px) {
+  #services .sx-head .lede { grid-column: 8 / 13; max-width: 38ch; margin-top: 6px; }
+}
+
+/* ---------- stacked default ---------- */
+#services .sx-track { margin-top: clamp(30px, 3.6vw, 56px); }
+#services .sx-stage { max-width: var(--max); margin: 0 auto; padding: 0 var(--gut); }
+#services .sx-top, #services .sx-view { display: none; }
+#services .sx-list { display: grid; border-bottom: 1px solid var(--line-d); }
+#services .sx-item { position: relative; display: grid; grid-template-columns: 1fr; gap: 20px 32px; padding: 26px 0 38px; border-top: 1px solid var(--line-d); }
+
+#services .sx-art { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: var(--ink-3);
+  /* 30deg chevron on the right edge: depth 21.65% of width over a 4:3 box = tan 30deg */
+  clip-path: polygon(0 0, 78.35% 0, 100% 50%, 78.35% 100%, 0 100%); }
+#services .sx-art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+#services .sx-art .m { filter: grayscale(1) contrast(1.12) brightness(.6); }
+#services .sx-art .c { filter: sepia(.28) saturate(.62) contrast(1.06) brightness(.9); transition: --w 1.5s var(--ease);
+  clip-path: polygon(0 0, calc(var(--w) * 121.65% - 21.65%) 0, calc(var(--w) * 121.65%) 50%, calc(var(--w) * 121.65% - 21.65%) 100%, 0 100%); }
+#services .sx-item.seen .sx-art .c, .no-js #services .sx-art .c { --w: 1; }
+
+#services .sx-row { font: inherit; }
+#services .sx-hit { display: block; }
+#services .sx-no { display: block; margin-bottom: 14px; color: var(--copper); font-size: 12px; letter-spacing: .16em; }
+#services .sx-lbl { display: block; font: 900 min(16vw, 118px)/.86 var(--f-display); font-stretch: 62%; letter-spacing: -.035em; text-transform: uppercase; color: var(--bone); margin-left: -.03em; }
+#services .sx-title { font: 600 clamp(18px, 2.2vw, 22px)/1.25 var(--f-body); color: var(--bone); margin: 4px 0 14px; letter-spacing: -.005em; }
+#services .sx-p { color: var(--mute-d); max-width: 46ch; font-size: clamp(15.5px, 1.05vw, 17px); line-height: 1.55; }
+#services .sx-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0 24px; }
+#services .sx-chips li { font: 500 11px/1 var(--f-mono); letter-spacing: .1em; text-transform: uppercase; padding: 9px 12px 8px; border: 1px solid var(--line-d); color: var(--mute-d); }
+#services .sx-cta { margin-bottom: 14px; }
+
+@media (min-width: 640px) {
+  #services .sx-item { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "row row" "art detail"; align-content: start; align-items: start; padding: 34px 0 44px; }
+  #services .sx-art { grid-area: art; align-self: start; }
+  #services .sx-row { grid-area: row; }
+  #services .sx-detail { grid-area: detail; }
+  #services .sx-lbl { font-size: min(14vw, 118px); }
+}
+
+/* ---------- pinned stage (desktop) ---------- */
+#services.sx--pin { --slot: 64svh; }
+#services.sx--pin .sx-track { height: calc(100svh + var(--slot) * 4); }
+#services.sx--pin .sx-stage { position: sticky; top: 0; height: 100svh; max-width: none; padding: 0; overflow: hidden; --k: 200px;
+  --fs: min(132px, max(46px, calc((100svh - 392px) / 4.7)), 9.6vw); }
+
+/* top instrument rail */
+#services.sx--pin .sx-top { display: flex; align-items: center; gap: 22px; position: absolute; z-index: 2; left: var(--gut); right: var(--gut); top: 94px; color: var(--mute-d); }
+.sx-top .mono { font-size: 10.5px; white-space: nowrap; }
+.sx-top b { color: var(--copper); font-weight: 500; }
+.sx-rail { position: relative; flex: 1; height: 1px; background: var(--line-d); }
+.sx-rail i { position: absolute; left: 0; top: -1px; height: 3px; width: 100%; background: var(--copper); transform-origin: left; transform: scaleX(var(--rp, 0)); }
+.sx-rail u { position: absolute; top: -5px; width: 1px; height: 11px; background: var(--line-d); text-decoration: none; transition: background .4s; }
+.sx-rail u:nth-of-type(1) { left: 0; } .sx-rail u:nth-of-type(2) { left: 25%; } .sx-rail u:nth-of-type(3) { left: 50%; } .sx-rail u:nth-of-type(4) { left: 75%; } .sx-rail u:nth-of-type(5) { left: calc(100% - 1px); }
+.sx-rail u.on { background: var(--copper); }
+
+/* the index */
+#services.sx--pin .sx-list { position: absolute; z-index: 2; left: var(--gut); top: 132px; width: calc(50% - var(--gut) - 12px); border-bottom: 0; display: block; }
+#services.sx--pin .sx-item { display: block; padding: 0; gap: 0; border-top: 1px solid var(--line-d); }
+#services.sx--pin .sx-item:last-child { border-bottom: 1px solid var(--line-d); }
+#services.sx--pin .sx-art { display: none; }
+#services.sx--pin .sx-hit { display: grid; grid-template-columns: var(--nc) 1fr; align-items: start; cursor: pointer; padding: .06em 0 .02em; outline-offset: -2px;
+  color: rgba(236,235,228,.44); transition: color .5s var(--ease); -webkit-tap-highlight-color: transparent; }
+#services.sx--pin .sx-hit:hover { color: rgba(236,235,228,.78); }
+#services.sx--pin .sx-item.on .sx-hit { color: var(--bone); }
+#services.sx--pin .sx-no { margin: calc(var(--fs) * .26) 0 0; color: inherit; transition: color .5s; }
+#services.sx--pin .sx-item.on .sx-no { color: var(--copper); }
+#services.sx--pin .sx-lbl { font-size: var(--fs); color: inherit; margin-left: -.03em; transition: transform .9s var(--ease); }
+#services.sx--pin .sx-item.on .sx-lbl { transform: translate3d(.06em, 0, 0); }
+
+#services.sx--pin .sx-detail { display: grid; grid-template-rows: 0fr; visibility: hidden; transition: grid-template-rows .85s var(--ease), visibility 0s .85s; }
+#services.sx--pin .sx-item.on .sx-detail { grid-template-rows: 1fr; visibility: visible; transition: grid-template-rows .85s var(--ease), visibility 0s 0s; }
+#services.sx--pin .sx-detail-in { min-height: 0; overflow: hidden; padding-left: var(--nc); max-width: calc(var(--nc) + 560px); }
+#services.sx--pin .sx-detail-in > * { opacity: 0; transform: translate3d(0, 14px, 0); transition: opacity .4s var(--ease), transform .4s var(--ease); }
+#services.sx--pin .sx-item.on .sx-detail-in > * { opacity: 1; transform: none; transition: opacity .8s var(--ease), transform .9s var(--ease); }
+#services.sx--pin .sx-item.on .sx-detail-in > :nth-child(1) { transition-delay: .18s; }
+#services.sx--pin .sx-item.on .sx-detail-in > :nth-child(2) { transition-delay: .26s; }
+#services.sx--pin .sx-item.on .sx-detail-in > :nth-child(3) { transition-delay: .34s; }
+#services.sx--pin .sx-item.on .sx-detail-in > :nth-child(4) { transition-delay: .42s; }
+#services.sx--pin .sx-title { margin-top: 2px; }
+#services.sx--pin .sx-chips { margin: 16px 0 20px; }
+
+#services.sx--pin .sx-hit::after { content: ""; position: absolute; right: 20px; top: calc(var(--fs) * .3); width: calc(var(--fs) * .2); height: calc(var(--fs) * .36); background: var(--copper); clip-path: polygon(0 0, 55% 0, 100% 50%, 55% 100%, 0 100%, 45% 50%); opacity: 0; transform: translate3d(-14px,0,0); transition: opacity .5s var(--ease), transform .8s var(--ease); }
+#services.sx--pin .sx-hit { position: relative; }
+#services.sx--pin .sx-item.on .sx-hit::after { opacity: 1; transform: none; }
+
+/* photo window */
+#services.sx--pin .sx-view { display: block; position: absolute; z-index: 1; right: 0; top: 132px; bottom: 56px; left: 46%; }
+.sx-win { position: absolute; inset: 0; overflow: hidden; background: var(--ink-3); clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, var(--k) 50%); }
+.sx-layer { --w: 1; --s: 0; --cv: 0; position: absolute; inset: 0; }
+.sx-layer:not(:first-child) { --w: 0;
+  clip-path: polygon(0 0, calc(100% * var(--w)) 0, calc(100% * var(--w) + var(--k)) 50%, calc(100% * var(--w)) 100%, 0 100%); }
+.sx-layer::after { content: ""; position: absolute; inset: 0; background: var(--ink); opacity: calc(var(--cv) * .72); pointer-events: none; }
+.sx-layer img { position: absolute; top: 0; left: -4%; width: 108%; height: 100%; object-fit: cover; max-width: none;
+  transform: translate3d(calc((1 - var(--w)) * -3%), 0, 0); will-change: transform; }
+.sx-layer .m { filter: grayscale(1) contrast(1.14) brightness(.56); }
+.sx-layer .c { filter: sepia(.28) saturate(.62) contrast(1.06) brightness(.88); clip-path: inset(0 0 calc((1 - var(--s)) * 100%) 0); }
+.sx-scan { position: absolute; z-index: 1; left: 0; right: 0; top: calc(var(--s) * 100%); height: 1px; background: var(--copper); box-shadow: 0 0 16px 1px rgba(232,128,63,.5);
+  opacity: min(calc(var(--s) * 24), calc((1 - var(--s)) * 24), 1); pointer-events: none; }
+.sx-scan em { position: absolute; right: var(--gut); top: -20px; font-style: normal; font-size: 10px; color: var(--copper); letter-spacing: .16em; }
+.sx-front { position: absolute; z-index: 2; top: 0; bottom: 0; left: calc(100% * var(--fw, 0)); width: calc(var(--k) + 3px); background: var(--copper); pointer-events: none; opacity: var(--fo, 0);
+  clip-path: polygon(0 0, 3px 0, 100% 50%, 3px 100%, 0 100%, calc(100% - 3px) 50%); }
+.sx-frame { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 3; }
+.sx-frame polyline { fill: none; stroke: rgba(236,235,228,.4); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.sx-cap { position: absolute; right: var(--gut); top: 100%; margin-top: 18px; display: flex; gap: 22px; font-size: 10.5px; color: var(--mute-d); white-space: nowrap; }
+.sx-cap b { color: var(--bone); font-weight: 500; }
+.sx-col { display: inline-block; min-width: 11ch; }
+
+/* ---------- after: help + note ---------- */
+#services .sx-after { margin-top: clamp(80px, 10vw, 170px); }
+#services .sx-help { display: grid; grid-template-columns: repeat(12, 1fr); column-gap: clamp(12px, 1.6vw, 28px); row-gap: 34px; align-items: end; padding: clamp(34px, 4vw, 64px) 0; border-top: 1px solid var(--line-d); border-bottom: 1px solid var(--line-d); position: relative; }
+#services .sx-help-mk { grid-column: 1 / -1; width: 54px; height: auto; color: var(--copper); }
+#services .sx-help-t { grid-column: 1 / -1; }
+#services .sx-help-h { text-wrap: balance; font: 900 clamp(46px, 7.4vw, 132px)/.86 var(--f-display); font-stretch: 68%; letter-spacing: -.035em; text-transform: uppercase; margin-left: -.03em; }
+#services .sx-help-t p { margin-top: 26px; font-size: clamp(16px, 1.35vw, 21px); line-height: 1.45; color: var(--mute-d); max-width: 36ch; }
+#services .sx-help-a { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 12px; }
+#services .sx-note { position: relative; margin-top: 34px; padding-left: 44px; max-width: 78ch; font-size: 14px; line-height: 1.6; color: var(--mute-d); }
+#services .sx-note::before { content: ""; position: absolute; left: 0; top: .8em; width: 28px; height: 1px; background: var(--copper); }
+@media (min-width: 861px) {
+  #services .sx-help-t { grid-column: 1 / 10; }
+  #services .sx-help-a { grid-column: 10 / 13; flex-direction: column; align-items: flex-start; }
+}
+@media (max-width: 520px) {
+  #services .sx-help-a .btn { width: 100%; }
+}
+@media (hover: hover) {
+  #services .sx-chips li { transition: border-color .4s, color .4s; }
+  #services .sx-chips li:hover { border-color: var(--copper); color: var(--bone); }
+}
+@media (max-height: 700px) and (min-width: 861px) {
+  #services.sx--pin .sx-chips { margin: 12px 0 14px; }
+  #services.sx--pin .sx-p { font-size: 15px; line-height: 1.5; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #services .sx-art .c { --w: 1; transition: none; }
+}
